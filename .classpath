@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="F:/Resources/libs/okio-1.14.0.jar"/>
 	<classpathentry kind="lib" path="F:/Resources/client-combined-3.141.59.jar"/>
 	<classpathentry kind="lib" path="F:/Resources/client-combined-3.141.59-sources.jar"/>
+	<classpathentry kind="lib" path="F:/Resources/testng-7.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
