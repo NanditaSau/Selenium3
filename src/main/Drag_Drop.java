@@ -1,33 +1,63 @@
-package main;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
-
-public class Drag_Drop {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		System.setProperty("webdriver.chrome.driver", "F:\\Resources\\chromedriver.exe");
-		ChromeDriver driver  = new ChromeDriver();
-		driver.get("https://the-internet.herokuapp.com/drag_and_drop"); 
-		
-		WebElement From = driver.findElement(By.id("column-a"));  
-	  
-    	WebElement To = driver.findElement(By.id("column-b"));  
 	
-			
-	  		
-		   
-		Actions act = new Actions(driver);  
-		act.dragAndDrop(From,To).build().perform();  
-		
+		package main;
 
-		
-        driver.close(); // it will close the current page
 
-	}
+		import org.openqa.selenium.By;
+		import org.openqa.selenium.Keys;
+		import org.openqa.selenium.WebDriver;
+		import org.openqa.selenium.WebElement;
+		import org.openqa.selenium.chrome.ChromeDriver;
+		import org.openqa.selenium.firefox.FirefoxDriver;
+		import org.openqa.selenium.interactions.Actions;
+		import org.testng.Assert;
 
-}
+		public class Drag_Drop {
+
+			public static void main(String[] args) throws InterruptedException {
+				
+				WebDriver driver = null;
+				String browser = "chrome";
+				
+				if(browser.equals("chrome")) {
+					System.setProperty("webdriver.chrome.driver", "F:\\Resources\\chromedriver.exe");
+					driver = new ChromeDriver();
+				}
+				else if(browser.equals("firefox")) {
+					System.setProperty("webdriver.gecko.driver", "F:\\Resources\\geckodriver.exe");
+					driver = new FirefoxDriver();
+				}
+					System.out.println("Please select one browser.");
+				
+				driver.manage().window().maximize(); // for maximizing the browser
+				
+				driver.get("https://www.seleniumeasy.com/test/basic-select-dropdown-demo.html"); 
+				
+				WebElement elem1 = driver.findElement(By.xpath("//option[text()='Florida']"));
+				WebElement elem2 = driver.findElement(By.xpath("//option[text()='New Jersey']"));
+				WebElement elem3 = driver.findElement(By.xpath("//option[text()='New York']"));
+				WebElement elem4 = driver.findElement(By.xpath("//option[text()='Washington']"));
+				
+				Actions action = new Actions(driver);
+				action.keyDown(Keys.CONTROL)
+						.moveToElement(elem1).click()
+						.moveToElement(elem1).click()
+						.moveToElement(elem2).click()
+						.moveToElement(elem3).click()
+						.moveToElement(elem4).click()
+						.build().perform();
+				
+				driver.findElement(By.xpath("//button[text()='Get All Selected']")).click();
+				
+				String strExpected = "Florida,New Jersey,New York,Washington";
+				
+				String value = driver.findElement(By.className("getall-selected")).getText().trim();
+				value = value.replace("Options selected are : ", "");
+				
+				// validation with TestNG
+				Assert.assertEquals(value, strExpected);
+				
+				//driver.quit(); 
+				
+			}
+
+		}
